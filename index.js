@@ -7,12 +7,27 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-
-
-
 let app = express();
 
 app.use(bodyParser.json());
+
+app.use((req, res, next)=>{
+    let token = req.header("Athorization")
+    console.log(token)
+    //created the auh
+
+    if(token!= null){
+        token = token.replace("Bearer","")
+        jwt.verify(token, process.env.JWT_SECRET,(err, decoded)=>{
+
+            if(!err){
+                req.user=decoded;
+            }
+        });
+    }
+    next()
+    }
+)
 
 let mongoUrl = process.env.MONGO_URL
 
