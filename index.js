@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import userRouter from "./routes/userRouter.js";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import reviewRouter from "./routes/reviewRouter.js";
 
 dotenv.config();
 
@@ -12,16 +13,18 @@ let app = express();
 app.use(bodyParser.json());
 
 app.use((req, res, next)=>{
-    let token = req.header("Athorization")
+    let token = req.header("Authorization")
     console.log(token)
     //created the auh
 
     if(token!= null){
-        token = token.replace("Bearer","")
+        token = token.replace("Bearer ","")
         jwt.verify(token, process.env.JWT_SECRET,(err, decoded)=>{
 
             if(!err){
                 req.user=decoded;
+                console.log(token);
+                console.log(decoded);
             }
         });
     }
@@ -39,7 +42,8 @@ connection.once("open",()=>{
     console.log("MongoDB connection established successfully...");
 })
 
-app.use("/api/users",userRouter)
+app.use("/api/users",userRouter);
+app.use("/api/reviews",reviewRouter);
 
 app.listen(3000,()=>{
     console.log("Server is running on port 3000");
