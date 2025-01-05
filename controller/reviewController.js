@@ -44,7 +44,7 @@ export function getReviews(req,res){
         }).then((reviews)=>{
             res.json(reviews);
         })
-        
+     return   
     }
 
     if (user.role == "admin"){
@@ -54,6 +54,7 @@ export function getReviews(req,res){
             console.error("Error fetching reviews:", error);
             res.status(500).json({ message: "Error fetching reviews." });
         });
+    return
     }
 }
 
@@ -109,6 +110,7 @@ export function deleteReview(req,res){
             })
 
         }
+        return
     }
 
 
