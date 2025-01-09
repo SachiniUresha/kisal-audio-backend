@@ -31,31 +31,27 @@ export function addReview(req,res){
         })
 }
 
-export function getReviews(req,res){
+export async function getReviews(req,res){
 
     const user = req.user;
     console.log("User:", user);
 
+    try{
+        if(user==null || user != "admin"){
+       
+            const reviews = await Review.find({isApproved : true});
+            res.json(reviews); //return danawd ndd
+        }      
 
-    if(user==null || user != "admin"){
-
-        Review.find({
-            isApproved : true
-        }).then((reviews)=>{
+        if (user.role == "admin"){
+            const reviews = await Review.find();
             res.json(reviews);
-        })
-     return   
-    }
-
-    if (user.role == "admin"){
-        Review.find().then((reviews)=>
-            res.json(reviews)
-        ).catch((error) => {
+        }
+    }catch(error){
             console.error("Error fetching reviews:", error);
             res.status(500).json({ message: "Error fetching reviews." });
-        });
-    return
     }
+    
 }
 
 export function deleteReview(req,res){
