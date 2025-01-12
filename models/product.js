@@ -20,18 +20,23 @@ const productSchema = new mongoose.Schema(
             required:true,
             default:"uncategorized"
         },
-        dimentions:{
-            type:Number,
+        dimensions:{
+            type:String,
             required:true
         },
-        discription:{
-            type:Number,
+        description:{
+            type:String,
             required:true
         },
         availability:{
             type:Boolean,
             required:true,
             default:true
+        },
+        image:{
+            type:[String],//add multiple images
+            required:true,
+            default:["https://www.google.com/url?sa=i&url=https%3A%2F%2Fapollobattery.com.au%2Fproduct%2Fns40rs%2F&psig=AOvVaw2QOZEnojvuGutWgp25iWYW&ust=1736752252323000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCKDg4LXR74oDFQAAAAAdAAAAABAE"]
         }
     }
 )
