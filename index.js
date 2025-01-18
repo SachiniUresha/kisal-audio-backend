@@ -6,6 +6,7 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import reviewRouter from "./routes/reviewRouter.js";
 import productRouter from "./routes/productRouter.js";
+import inquiryRouter from "./routes/inquiryRouter.js";
 
 dotenv.config();
 
@@ -26,10 +27,16 @@ app.use((req, res, next)=>{
                 req.user=decoded;
                 console.log(token);
                 console.log(decoded);
+                //next();
+
             }
+            //next();
+
         });
+        //next();
+
     }
-    next()
+    next();
     }
 )
 
@@ -46,6 +53,7 @@ connection.once("open",()=>{
 app.use("/api/users",userRouter);
 app.use("/api/reviews",reviewRouter);
 app.use("/api/products",productRouter);
+app.use("/api/inquiries",inquiryRouter);
 
 app.listen(3000,()=>{
     console.log("Server is running on port 3000");
