@@ -66,7 +66,7 @@ export function isItAdmin(req){
     
             let isAdmin=false;
         
-            if(req.user!="null" && req.user.role == "admin"){
+            if(req.user!=null && req.user.role == "admin"){
                 isAdmin=true;
             }
             return isAdmin;
@@ -77,7 +77,7 @@ export function isItCustomer(req){
 
     let isCustomer = false;
 
-    if(req.user!="null" && req.user.role=="customer"){
+    if(req.user!=null && req.user.role=="customer"){
         isCustomer = true;
     }
 

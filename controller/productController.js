@@ -1,5 +1,6 @@
 import Product from "../models/product.js";
 import { isItAdmin } from "./userController.js";
+import jwt from "jsonwebtoken";
 
 export async function addProduct(req,res){
 
@@ -42,7 +43,7 @@ export async function getProducts(req,res){
     if(req.user!="null" && req.user.role == "admin"){
         isAdmin=true;
     }*/
-
+console.log(req.user);
    try{
 
     if(isItAdmin(req)){
