@@ -82,7 +82,7 @@ export async function createOrder(req, res){
                 quantity: data.orderedItems[i].qty
             })
 
-            oneDayCost += product.price * data.orederedItems[i].qty;
+            oneDayCost += product.price * data.orderedItems[i].qty;
 
         }catch(e){
             res.status(500).json({
@@ -97,7 +97,7 @@ export async function createOrder(req, res){
     
 
 
-orderInfo,days = data.days;
+orderInfo.days= data.days;
 orderInfo.startingDate = data.startingDate;
 orderInfo.endingDate = data.endingDate;
 orderInfo.totalAmount = oneDayCost * data.days;
