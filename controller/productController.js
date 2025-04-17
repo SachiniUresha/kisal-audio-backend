@@ -125,14 +125,15 @@ export async function getProduct(req, res){
         const product = await Product.findOne({
             key:key
         })
-        if(Product==null){
+        if(product==null){
             res.status(404).json({
                 message:"Product not Found"
             })
-            return
+            return;
         }
-        res.json(Product)
-        return
+        res.json(product);
+        return;
+        
     }catch(e){
         res.status(500).json({
             message:"Failed to get product"
