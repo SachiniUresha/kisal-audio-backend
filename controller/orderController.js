@@ -100,3 +100,25 @@ try{
 
 
 
+export async function getOrders(req,res){
+
+    if(isItCustomer){
+       try{
+        const orders = await order.find({email:req.user.email});
+        return(orders);
+       }catch(e){
+        res.status(500).json({error:"Failed to get orders"});
+        }
+    }else if(isItAdmin){
+        try{
+            const orders = await order.find();
+            return(orders);
+        }catch(e){
+            res.status(500).json({error:"Failed to get orders"});
+
+        }
+    }else{
+        res.status(403).json({error:"Unauthorized"})
+    }
+}
+
