@@ -4,5 +4,7 @@ import express from 'express';
 const orderRouter = express.Router();
 
 orderRouter.post("/",createOrder);
+orderRouter.post("/quote",createOrder);
+orderRouter.get("/",createOrder);
 
 export default orderRouter;
