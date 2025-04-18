@@ -44,7 +44,7 @@ export function loginUser(req,res){
                     });
                     return;
                 }
-                
+
                 const isPasswordCorrect = bcrypt.compareSync(data.password, user.password)
 
                 if(isPasswordCorrect){
@@ -153,4 +153,16 @@ export async function blockOrUnblockUser(req,res) {
         res.status(403).json({error: "Unauthorized"});
     }
     
+}
+
+export function getUser(req,res){
+    if(req.user != null){
+        res.json({
+            error:"hhhhhhhhhhhhhhhhhhhhhhh"
+        })
+    }else{
+        res.status(403).json({
+            error:"mmmmmmmmmmmmmmmmmmmmmm"
+        })
+    }
 }

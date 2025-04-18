@@ -102,17 +102,21 @@ try{
 
 export async function getOrders(req,res){
 
+    console.log(req.user);
+
     if(isItCustomer){
        try{
-        const orders = await order.find({email:req.user.email});
-        return(orders);
-       }catch(e){
+        const orders = await Order.find({email:req.user.email});
+        console.log(orders)
+        res.status(200).json(orders);
+    }catch(e){
         res.status(500).json({error:"Failed to get orders"});
         }
     }else if(isItAdmin){
         try{
-            const orders = await order.find();
-            return(orders);
+            const orders = await Order.find();
+            console.log(orders);
+            res.status(200).json(orders);
         }catch(e){
             res.status(500).json({error:"Failed to get orders"});
 
@@ -198,6 +202,45 @@ try{
         message:"Failed to create order"
     })
 }
+}
+
+export async function approveOrRejectOrder(req, res){
+    const orderId = req.params.orderId;
+    const status = req.body.status;
+
+    if(isItAdmin(req)){
+        try{
+            const order = await Order.findOne(
+                {
+                orderId: orderId
+                }
+            )
+
+            if(order==null){   
+                res.status(404 ).json({
+                    error:"Order Not Found "
+             } );
+             return;
+             }
+
+             await Order.updateOne(
+                { 
+                    orderId: orderId
+                  },
+                {  
+                    status:status
+                 }
+             );
+
+             res.json({   
+                message:"Order approved/rejected successfully           "
+              } )
+        }catch( e){
+            res.status(500).json({
+                error:"Failed to get order"
+            })
+        }
+    }
 }
 
 
