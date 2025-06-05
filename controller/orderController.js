@@ -1,5 +1,6 @@
 import Order from "../models/order.js";
 import Product from "../models/product.js";
+import { isItAdmin, isItCustomer } from "./userController.js";
 
 
 
@@ -47,29 +48,9 @@ export async function createOrder(req, res){
                 res.status(400).json({
                     message:"Product with key "+data.orderedItems[i].key+" is "
                 })
-                return
+                return;
             }
             
-        //     type:[
-        //         {
-        //             product : {
-        //         key:{
-        //             type:String,
-        //             required:true
-        //         },
-        //         name:{
-        //             type:String,
-        //             required:true
-        //         },
-        //         image:{
-        //             type:String,
-        //             required:true
-        //         },
-        //         quantity:{
-        //             type:Number,
-        //             require: true
-        //         }
-        //   }  }  ]
 
             orderInfo.orderedItems.push({
 
@@ -115,10 +96,37 @@ try{
         message:"Failed to create order"
     })
 }
-
-
-
 }
+
+
+
+export async function getOrders(req,res){
+
+    console.log(req.user);
+
+    if(isItCustomer){
+       try{
+        const orders = await Order.find({email:req.user.email});
+        console.log(orders)
+        res.status(200).json(orders);
+    }catch(e){
+        res.status(500).json({error:"Failed to get orders"});
+        }
+    }else if(isItAdmin){
+        try{
+            const orders = await Order.find();
+            console.log(orders);
+            res.status(200).json(orders);
+        }catch(e){
+            res.status(500).json({error:"Failed to get orders"});
+
+        }
+    }else{
+        res.status(403).json({error:"Unauthorized"})
+    }
+}
+
+
 
 export async function getQuote(req, res){
 
@@ -143,31 +151,12 @@ export async function getQuote(req, res){
 
             if(product.availability==false){
                 res.status(400).json({
-                    message:"Product with key "+data.orderedItems[i].key+" is "
-                })
-                return
+                    message:"Product with key "+data.orderedItems[i].key+" is not available"
+                });
+                return;
             }
             
-        //     type:[
-        //         {
-        //             product : {
-        //         key:{
-        //             type:String,
-        //             required:true
-        //         },
-        //         name:{
-        //             type:String,
-        //             required:true
-        //         },
-        //         image:{
-        //             type:String,
-        //             required:true
-        //         },
-        //         quantity:{
-        //             type:Number,
-        //             require: true
-        //         }
-        //   }  }  ]
+        
 
             orderInfo.orderedItems.push({
 
@@ -185,14 +174,15 @@ export async function getQuote(req, res){
         }catch(e){
             res.status(500).json({
                 message:"Failed to create order"
-            })
-            return
+
+            });
+            return;
+
 
         }
 
     }
 
-    
 
 
 orderInfo.days= data.days;
@@ -203,18 +193,56 @@ orderInfo.totalAmount = oneDayCost * data.days;
 try{
     res.json({
         message:"Order quatation",
-        total: orderInfo.totalAmount //sending order details to frontend
-    })
+        total:orderInfo.totalAmount,
+        
+    });
 }catch(e){
     console.log(e);
     res.status(500).json({
         message:"Failed to create order"
     })
 }
-
-
-
 }
+
+export async function approveOrRejectOrder(req, res){
+    const orderId = req.params.orderId;
+    const status = req.body.status;
+
+    if(isItAdmin(req)){
+        try{
+            const order = await Order.findOne(
+                {
+                orderId: orderId
+                }
+            )
+
+            if(order==null){   
+                res.status(404 ).json({
+                    error:"Order Not Found "
+             } );
+             return;
+             }
+
+             await Order.updateOne(
+                { 
+                    orderId: orderId
+                  },
+                {  
+                    status:status
+                 }
+             );
+
+             res.json({   
+                message:"Order approved/rejected successfully           "
+              } )
+        }catch( e){
+            res.status(500).json({
+                error:"Failed to get order"
+            })
+        }
+    }
+}
+
 
 
 
