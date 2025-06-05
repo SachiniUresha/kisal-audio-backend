@@ -1,5 +1,5 @@
 import express from "express";
-import { blockOrUnblockUser, getAllUsers, getUser, loginUser, loginWithGoogle, registerUser, sendOTP } from "../controller/userController.js";
+import { blockOrUnblockUser, getAllUsers, getUser, loginUser, loginWithGoogle, registerUser, sendOTP, verifyOTP } from "../controller/userController.js";
 
 const userRouter = express.Router()
 
@@ -16,6 +16,8 @@ userRouter.get("/", getUser)
 userRouter.post("/google", loginWithGoogle)
 
 userRouter.get("/sendOTP", sendOTP)
+
+userRouter.post("/verifyEmail", verifyOTP)
 
 export default userRouter;
 

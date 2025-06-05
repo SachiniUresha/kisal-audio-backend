@@ -224,6 +224,7 @@ export async function sendOTP(req,res){
     res.status(403).json({error : "Unauthorized"})
     return;
   }
+  
   //generate number between 1000 and 9999
   const otp = Math.floor(Math.random()*9000) + 1000;
   //save otp in database
