@@ -12,10 +12,11 @@ const transport = nodemailer.createTransport({
   port: 587,
   secure: false,
   auth: {
-    user: "skyrek7@gmail.com",
-    pass: "newloynziggpmckm",
+    user: "sweerakkody19@gmail.com",
+    pass: "rdprypwnmlthptht",
   }
 })
+
 export function registerUser(req, res) {
 	const data = req.body;
 
@@ -63,7 +64,7 @@ export function loginUser(req, res) {
 						role: user.role,
 						profilePicture: user.profilePicture,
 						phone: user.phone,
-            emailVerified: user.emailVerified
+                        emailVerified: user.emailVerified
 					},
 					process.env.JWT_SECRET
 				);
@@ -179,7 +180,7 @@ export async function loginWithGoogle(req, res) {
 					role: user.role,
 					profilePicture: user.profilePicture,
 					phone: user.phone,
-          emailVerified: true
+                    emailVerified: true
 				},
 				process.env.JWT_SECRET
 			);
@@ -215,10 +216,11 @@ export async function loginWithGoogle(req, res) {
 		res.status(500).json({ error: "Failed to login with google" });
 	}
 }
-export async function sendOTP(req,res){
-   
 
-  if(req.user == null){
+
+export async function sendOTP(req,res){
+
+	if(req.user == null){
     res.status(403).json({error : "Unauthorized"})
     return;
   }
@@ -232,7 +234,7 @@ export async function sendOTP(req,res){
   await newOTP.save();
   
   const message = {
-    from : "skyrek7@gmail.com",
+    from : "sweerakkody19@gmail.com",
     to : req.user.email,
     subject : "Validating OTP",
     text : "Your otp code is "+otp
