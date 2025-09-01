@@ -284,3 +284,19 @@ export async function verifyOTP(req,res){
   }
   
 }
+
+export async function updateUser(req, res){
+
+  if (!req.user) return res.status(403).json({ error: "Unauthorized" });
+
+  try {
+    const updatedUser = await User.findOneAndUpdate(
+      { email: req.params.email },
+      req.body,
+      { new: true }
+    );
+    res.json(updatedUser);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to update profile" });
+  }
+}
