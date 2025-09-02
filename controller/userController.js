@@ -251,6 +251,21 @@ export async function sendOTP(req,res){
     }
   });
 
+export async function getUser(req, res) {
+  if (!req.user) {
+    return res.status(403).json({ error: "Unauthorized" });
+  }
+
+  try {
+    const freshUser = await User.findOne({ email: req.user.email });
+    if (!freshUser) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    res.json(freshUser);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch user profile" });
+  }
+
 }
 
 export async function verifyOTP(req,res){
@@ -300,3 +315,5 @@ export async function updateUser(req, res){
     res.status(500).json({ error: "Failed to update profile" });
   }
 }
+
+
