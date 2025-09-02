@@ -156,14 +156,20 @@ export async function blockOrUnblockUser(req,res) {
     
 }
 
-export function getUser(req,res){
-    if(req.user != null){
-        res.json(req.user)
-    }else{
-        res.status(403).json({
-            error:"Unauthorized"
-        })
+export async function getUser(req, res) {
+  if (!req.user) {
+    return res.status(403).json({ error: "Unauthorized" });
+  }
+
+  try {
+    const freshUser = await User.findOne({ email: req.user.email });
+    if (!freshUser) {
+      return res.status(404).json({ error: "User not found" });
     }
+    res.json(freshUser);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch user profile" });
+  }
 }
 
 export async function loginWithGoogle(req, res){
@@ -221,4 +227,20 @@ export async function loginWithGoogle(req, res){
     }     )
 }
 
+}
+
+export async function updateUser(req, res){
+
+  if (!req.user) return res.status(403).json({ error: "Unauthorized" });
+
+  try {
+    const updatedUser = await User.findOneAndUpdate(
+      { email: req.params.email },
+      req.body,
+      { new: true }
+    );
+    res.json(updatedUser);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to update profile" });
+  }
 }
