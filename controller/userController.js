@@ -146,13 +146,13 @@ export async function blockOrUnblockUser(req, res) {
 		res.status(403).json({ error: "Unauthorized" });
 	}
 }
-export function getUser(req, res) {
+/*export function getUser(req, res) {
 	if (req.user != null) {
 		res.json(req.user);
 	} else {
 		res.status(403).json({ error: "Unauthorized" });
 	}
-}
+}*/
 
 export async function loginWithGoogle(req, res) {
 	//https://www.googleapis.com/oauth2/v3/userinfo
@@ -250,6 +250,8 @@ export async function sendOTP(req,res){
       res.json({message : "OTP sent successfully"})
     }
   });
+
+}
 
 export async function getUser(req, res) {
   if (!req.user) {
