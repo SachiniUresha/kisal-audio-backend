@@ -22,11 +22,11 @@ const productSchema = new mongoose.Schema(
         },
         dimensions:{
             type:String,
-            required:true
+            required:false
         },
         description:{
             type:String,
-            required:true
+            required:false
         },
         availability:{
             type:Boolean,
