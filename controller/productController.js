@@ -73,7 +73,20 @@ export async function updateProduct(req,res){
 
             const data = req.body;
 
-            await Product.updateOne({key:key},data)
+            const updatedProduct = await Product.findOneAndUpdate(
+                { key: key },
+                { $set: data },
+                { new: true } // return updated product
+            );
+
+            //await Product.updateOne({key:key},data)
+
+             if (!updatedProduct) {
+                return res.status(404).json({
+                    message: "Product not found",
+                });
+            }
+
 
             //after updating
             res.json({
