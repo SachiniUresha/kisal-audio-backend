@@ -253,3 +253,16 @@ export async function getOrderStats(req, res) {
 }
 
 
+export async function getMyOrders(req, res) {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    // Assuming your Order model has a 'userId' field linking to the user
+    const orders = await Order.find({ userId: req.user._id }).sort({ createdAt: -1 });
+    res.status(200).json({ orders });
+  } catch (err) {
+    res.status(500).json({ message: "Failed to fetch orders", error: err.message });
+  }
+}
