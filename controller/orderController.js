@@ -243,6 +243,13 @@ export async function approveOrRejectOrder(req, res){
     }
 }
 
-
+export async function getOrderStats(req, res) {
+  try {
+    const orders = await Order.countDocuments();
+    res.status(200).json({ orders });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+}
 
 
