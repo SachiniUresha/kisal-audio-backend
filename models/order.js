@@ -44,11 +44,11 @@ const orderSchema = new mongoose.Schema({
     },
     startingDate:{
         type:Date,
-        required:true
+        required:false
     },
     endingDate:{
         type:Date,
-        required:true
+        required:false
     },
     isApproved:{
         type:Boolean,
