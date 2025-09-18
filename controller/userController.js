@@ -318,4 +318,11 @@ export async function updateUser(req, res){
   }
 }
 
-
+export async function getUserStats(req, res) {
+  try {
+    const users = await User.countDocuments();
+    res.status(200).json({ users });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+}

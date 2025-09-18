@@ -155,3 +155,13 @@ export async function getProduct(req, res){
     }
 }
 
+export async function getProductStats(req, res) {
+  try {
+    const products = await Product.countDocuments();
+    res.status(200).json({ products });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+}
+
+
